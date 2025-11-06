@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library Management System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * { 
+      box-sizing: border-box; 
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Crimson Text', serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      min-height: 100vh;
+      padding: 20px;
+      color: #2c3e50;
+    }
+    
+    .main-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      border: 1px solid #e8e8e8;
+    }
+    
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .header p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .content {
+      padding: 40px;
+    }
+    
+    .login-section {
+      text-align: center;
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 40px 0;
+    }
+    
+    .form-group {
+      margin-bottom: 25px;
+      text-align: left;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #34495e;
+      font-size: 1.1rem;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 15px 20px;
+      border: 2px solid #e8e8e8;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-family: 'Crimson Text', serif;
+      transition: all 0.3s ease;
+      background: #fafafa;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: #667eea;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    .btn {
+      padding: 15px 30px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      font-family: 'Crimson Text', serif;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    }
+    
+    .btn-success {
+      background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+      color: white;
+    }
+    
+    .btn-success:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(39, 174, 96, 0.3);
+    }
+    
+    .btn-warning {
+      background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+      color: white;
+    }
+    
+    .btn-danger {
+      background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+      color: white;
+    }
+    
+    .library-app {
+      display: none;
+    }
+    
+    .section {
+      background: white;
+      border-radius: 16px;
+      padding: 30px;
+      margin-bottom: 30px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+      border: 1px solid #f0f0f0;
+    }
+    
+    .section h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: #2c3e50;
+      margin-bottom: 25px;
+      border-bottom: 3px solid #667eea;
+      padding-bottom: 10px;
+    }
+    
+    .icon-card {
+      background: white;
+      border-radius: 16px;
+      padding: 30px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid #e8e8e8;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    }
+    
+    .icon-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(102, 126, 234, 0.2);
+      border-color: #667eea;
+    }
+    
+    .icon-large {
+      font-size: 4rem;
+      margin-bottom: 15px;
+    }
+    
+    .icon-card h3 {
+      font-family: 'Playfair Display', serif;
+      color: #2c3e50;
+      margin-bottom: 8px;
+      font-size: 1.3rem;
+    }
+    
+    .icon-card p {
+      color: #7f8c8d;
+      font-size: 0.9rem;
+      margin: 0;
+    }
+    
+    .error {
+      color: #e74c3c;
+      background: #fdf2f2;
+      padding: 10px 15px;
+      border-radius: 8px;
+      margin-top: 10px;
+      border-left: 4px solid #e74c3c;
+    }
+    
+    .success {
+      color: #27ae60;
+      background: #f0fdf4;
+      padding: 10px 15px;
+      border-radius: 8px;
+      margin-top: 10px;
+      border-left: 4px solid #27ae60;
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    .back-btn {
+      text-align: center;
+      margin-top: 30px;
+    }
+    
+    .book-card {
+      background: white;
+      border-radius: 16px;
+      padding: 25px;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+      border: 1px solid #f0f0f0;
+      transition: all 0.3s ease;
+    }
+    
+    .book-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(102, 126, 234, 0.2);
+    }
+    
+    .book-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: #2c3e50;
+      margin-bottom: 8px;
+    }
+    
+    .book-author {
+      color: #7f8c8d;
+      font-style: italic;
+      margin-bottom: 15px;
+    }
+    
+    .book-stats {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 15px;
+    }
+    
+    .stat-item {
+      background: #f8f9fa;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      color: #2c3e50;
+      border: 1px solid #e8e8e8;
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .stat-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 25px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    }
+    
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    
+    .stat-label {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+    
+    .rank-badge {
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.2rem;
+      box-shadow: 0 5px 15px rgba(243, 156, 18, 0.4);
+    }
+    
+    .rank-1 {
+      background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+      color: #2c3e50;
+    }
+    
+    .rank-2 {
+      background: linear-gradient(135deg, #c0c0c0 0%, #e5e5e5 100%);
+      color: #2c3e50;
+    }
+    
+    .rank-3 {
+      background: linear-gradient(135deg, #cd7f32 0%, #daa520 100%);
+      color: white;
+    }
+    
+    .popularity-bar {
+      background: #ecf0f1;
+      height: 8px;
+      border-radius: 4px;
+      margin: 15px 0;
+      overflow: hidden;
+    }
+    
+    .popularity-fill {
+      height: 100%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+    
+    .borrower-card {
+      background: white;
+      border-radius: 16px;
+      padding: 25px;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+      border: 1px solid #f0f0f0;
+    }
+    
+    .borrower-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: #2c3e50;
+      margin-bottom: 8px;
+    }
+    
+    .borrower-info {
+      color: #7f8c8d;
+      margin-bottom: 15px;
+    }
+    
+    @media (max-width: 768px) {
+      .content {
+        padding: 20px;
+      }
+      
+      .header h1 {
+        font-size: 2rem;
+      }
+      
+      .icon-card {
+        padding: 20px 15px;
+      }
+      
+      .icon-large {
+        font-size: 3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="main-container">
+  <div class="header">
+    <h1>📚 Library</h1>
+    <p>Management System</p>
+  </div>
+  
+  <div class="content">
+    <!-- Login Section -->
+    <div id="loginSection" class="login-section">
+      <h2 style="font-family: 'Playfair Display', serif; margin-bottom: 30px; color: #2c3e50;">Welcome Back</h2>
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" class="form-control" placeholder="Enter your username">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" class="form-control" placeholder="Enter your password">
+      </div>
+      <button onclick="login()" class="btn btn-primary">Sign In</button>
+      <div id="loginError" class="error" style="display: none;"></div>
+    </div>
+
+    <!-- Library Application -->
+    <div id="libraryApp" class="library-app">
+      <!-- Home Page with Icons -->
+      <div class="section" id="homePage">
+        <div style="text-align: center; padding: 40px 0;">
+          <h2 style="font-family: 'Playfair Display', serif; color: #2c3e50; margin-bottom: 30px;">Welcome to the Library</h2>
+          <p style="font-size: 1.2rem; color: #7f8c8d; margin-bottom: 40px;">Choose an option to get started</p>
+          
+          <!-- Icons Grid -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; max-width: 800px; margin: 0 auto;">
+            
+            <!-- Borrow Book Icon -->
+            <div class="icon-card" onclick="showTab('borrow')">
+              <div class="icon-large">📚</div>
+              <h3>Borrow Book</h3>
+              <p>Borrow books from library</p>
+            </div>
+            
+            <!-- Return Book Icon -->
+            <div class="icon-card" onclick="showTab('return')">
+              <div class="icon-large">🔄</div>
+              <h3>Return Book</h3>
+              <p>Return borrowed books</p>
+            </div>
+            
+            <!-- Add Book Icon -->
+            <div class="icon-card" onclick="showTab('addbook')">
+              <div class="icon-large">📖</div>
+              <h3>Add Book</h3>
+              <p>Add new books to library</p>
+            </div>
+            
+            <!-- Search Book Icon -->
+            <div class="icon-card" onclick="showTab('search')">
+              <div class="icon-large">🔍</div>
+              <h3>Search Book</h3>
+              <p>Search for specific books</p>
+            </div>
+            
+            <!-- All Books Icon -->
+            <div class="icon-card" onclick="showTab('books')">
+              <div class="icon-large">📋</div>
+              <h3>All Books</h3>
+              <p>View all library books</p>
+            </div>
+            
+            <!-- Statistics Icon -->
+            <div class="icon-card" onclick="showTab('stats')">
+              <div class="icon-large">📊</div>
+              <h3>Statistics</h3>
+              <p>View library statistics</p>
+            </div>
+            
+            <!-- Borrowers Icon -->
+            <div class="icon-card" onclick="showTab('borrowers')">
+              <div class="icon-large">👥</div>
+              <h3>Borrowers</h3>
+              <p>View active borrowers</p>
+            </div>
+            
+            <!-- Popular Books Icon -->
+            <div class="icon-card" onclick="showTab('popular')">
+              <div class="icon-large">🔥</div>
+              <h3>Popular Books</h3>
+              <p>Most borrowed books</p>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+
+      <!-- Borrow Book Tab -->
+      <div id="borrow" class="tab-content">
+        <div class="section">
+          <h3>📚 Borrow Book</h3>
+          <div class="form-group">
+            <label for="borrowBookId">Book ID</label>
+            <input type="text" id="borrowBookId" class="form-control" placeholder="Enter book ID">
+          </div>
+          <div class="form-group">
+            <label for="borrowerName">Borrower Name</label>
+            <input type="text" id="borrowerName" class="form-control" placeholder="Enter borrower name">
+          </div>
+          <div class="form-group">
+            <label for="borrowerId">Borrower ID</label>
+            <input type="text" id="borrowerId" class="form-control" placeholder="Enter borrower ID">
+          </div>
+          <div class="form-group">
+            <label for="borrowerPhone">Phone Number</label>
+            <input type="text" id="borrowerPhone" class="form-control" placeholder="Enter phone number">
+          </div>
+          <button onclick="borrowBook()" class="btn btn-success">Borrow Book</button>
+          <div id="borrowMessage" style="display: none;"></div>
+        </div>
+        <div class="back-btn">
+          <button onclick="showHome()" class="btn btn-primary">🏠 Back to Home</button>
+        </div>
+      </div>
+
+      <!-- Return Book Tab -->
+      <div id="return" class="tab-content">
+        <div class="section">
+          <h3>🔄 Return Book</h3>
+          <div class="form-group">
+            <label for="returnBorrowerId">Borrower ID</label>
+            <input type="text" id="returnBorrowerId" class="form-control" placeholder="Enter borrower ID">
+          </div>
+          <button onclick="returnBook()" class="btn btn-warning">Return Book</button>
+          <div id="returnMessage" style="display: none;"></div>
+        </div>
+        <div class="back-btn">
+          <button onclick="showHome()" class="btn btn-primary">🏠 Back to Home</button>
+        </div>
+      </div>
+
+      <!-- Add Book Tab -->
+      <div id="addbook" class="tab-content">
+        <div class="section">
+          <h3>📖 Add New Book</h3>
+          <div class="form-group">
+            <label for="bookId">Book ID</label>
+            <input type="text" id="bookId" class="form-control" placeholder="Enter unique book ID (e.g., B1301)">
+          </div>
+          <div class="form-group">
+            <label for="bookTitle">Book Title</label>
+            <input type="text" id="bookTitle" class="form-control" placeholder="Enter book title">
+          </div>
+          <div class="form-group">
+            <label for="bookAuthor">Author</label>
+            <input type="text" id="bookAuthor" class="form-control" placeholder="Enter author name">
+          </div>
+          <div class="form-group">
+            <label for="bookCopies">Number of Copies</label>
+            <input type="number" id="bookCopies" class="form-control" placeholder="Enter number of copies" min="1" value="1">
+          </div>
+          <button onclick="addBook()" class="btn btn-success">Add Book</button>
+          <div id="addMessage" style="display: none;"></div>
+          <div id="bookPreview" style="display: none;"></div>
+        </div>
+        <div class="back-btn">
+          <button onclick="showHome()" class="btn btn-primary">🏠 Back to Home</button>
+        </div>
+      </div>
+
+      <!-- Search Book Tab -->
+      <div id="search" class="tab-content">
+        <div class="section">
+          <h3>🔍 Search Book</h3>
+          <div class="form-group">
+            <label for="searchBookId">Book ID</label>
+            <input type="text" id="searchBookId" class="form-control" placeholder="Enter book ID to search">
+          </div>
+          <button onclick="searchBook()" class="btn btn-primary">Search</button>
+          <div id="searchResult" style="display: none;"></div>
+        </div>
+        <div class="back-btn">
+          <button onclick="showHome()" class="btn btn-primary">🏠 Back to Home</button>
+        </div>
+      </div>
+
+      <!-- All Books Tab -->
+      <div id="books" class="tab-content">
+        <div class="section">
+          <h3>📋 All Books</h3>
+          <div id="allBooksList"></div>
+        </div>
+        <div class="back-btn">
+          <button onclick="showHome()" class="btn btn-primary">🏠 Back to Home</button>
+        </div>
+      </div>
+
+      <!-- Statistics Tab -->
+      <div id="stats" class="tab-content">
+        <div class="section">
+          <h3>📊 Library Statistics</h3>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-number" id="totalBooks">0</div>
+              <div class="stat-label">Total Books</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number" id="totalBorrowed">0</div>
+              <div class="stat-label">Books Borrowed</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number" id="totalBorrowers">0</div>
+              <div class="stat-label">Active Borrowers</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number" id="totalBorrows">0</div>
+              <div class="stat-label">Total Borrows</div>
+            </div>
+          </div>
+        </div>
+        <div class="back-btn">
+          <button onclick="showHome()" class="btn btn-primary">🏠 Back to Home</button>
+        </div>
+      </div>
+
+      <!-- Borrowers Tab -->
+      <div id="borrowers" class="tab-content">
+        <div class="section">
+          <h3>👥 Active Borrowers</h3>
+          <div id="borrowersList"></div>
+        </div>
+        <div class="back-btn">
+          <button onclick="showHome()" class="btn btn-primary">🏠 Back to Home</button>
+        </div>
+      </div>
+
+      <!-- Popular Books Tab -->
+      <div id="popular" class="tab-content">
+        <div class="section">
+          <h3>🔥 Popular Books</h3>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-number" id="popTotalBooks">0</div>
+              <div class="stat-label">Total Books</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number" id="popTotalBorrows">0</div>
+              <div class="stat-label">Total Borrows</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number" id="popAvgBorrows">0</div>
+              <div class="stat-label">Avg Borrows/Book</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number" id="popTopBorrows">0</div>
+              <div class="stat-label">Top Book Borrows</div>
+            </div>
+          </div>
+          <div id="popularBooksList"></div>
+        </div>
+        <div class="back-btn">
+          <button onclick="showHome()" class="btn btn-primary">🏠 Back to Home</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const VALID_USER = "admin";
+const VALID_PASS = "1234";
+
+// Sample books data
+let books = {
+  "B101": {
+    title: "The Great Gatsby",
+    author: "F. Scott Fitzgerald",
+    totalCopies: 5,
+    borrowedCopies: 1,
+    count: 15,
+    borrowers: [{ borrowerID: "BR001", name: "John Doe", phone: "123-456-7890" }]
+  },
+  "B102": {
+    title: "To Kill a Mockingbird",
+    author: "Harper Lee",
+    totalCopies: 3,
+    borrowedCopies: 0,
+    count: 12,
+    borrowers: []
+  },
+  "B103": {
+    title: "Pride and Prejudice",
+    author: "Jane Austen",
+    totalCopies: 4,
+    borrowedCopies: 0,
+    count: 18,
+    borrowers: []
+  },
+  "B104": {
+    title: "1984",
+    author: "George Orwell",
+    totalCopies: 6,
+    borrowedCopies: 0,
+    count: 22,
+    borrowers: []
+  },
+  "B105": {
+    title: "The Catcher in the Rye",
+    author: "J.D. Salinger",
+    totalCopies: 2,
+    borrowedCopies: 0,
+    count: 8,
+    borrowers: []
+  },
+  "B201": {
+    title: "The Alchemist",
+    author: "Paulo Coelho",
+    totalCopies: 4,
+    borrowedCopies: 0,
+    count: 25,
+    borrowers: []
+  },
+  "B202": {
+    title: "The Kite Runner",
+    author: "Khaled Hosseini",
+    totalCopies: 3,
+    borrowedCopies: 0,
+    count: 14,
+    borrowers: []
+  },
+  "B301": {
+    title: "Dune",
+    author: "Frank Herbert",
+    totalCopies: 3,
+    borrowedCopies: 0,
+    count: 11,
+    borrowers: []
+  },
+  "B401": {
+    title: "The Da Vinci Code",
+    author: "Dan Brown",
+    totalCopies: 7,
+    borrowedCopies: 0,
+    count: 32,
+    borrowers: []
+  },
+  "B501": {
+    title: "Sapiens: A Brief History of Humankind",
+    author: "Yuval Noah Harari",
+    totalCopies: 4,
+    borrowedCopies: 0,
+    count: 26,
+    borrowers: []
+  },
+  "B901": {
+    title: "Harry Potter and the Sorcerer's Stone",
+    author: "J.K. Rowling",
+    totalCopies: 8,
+    borrowedCopies: 0,
+    count: 45,
+    borrowers: []
+  }
+};
+
+let borrowers = {
+  "BR001": {
+    name: "John Doe",
+    phone: "123-456-7890",
+    borrowedBooks: ["B101"]
+  }
+};
+
+function login() {
+  const user = document.getElementById("username").value.trim();
+  const pass = document.getElementById("password").value.trim();
+  const error = document.getElementById("loginError");
+  
+  if (user === VALID_USER && pass === VALID_PASS) {
+    document.getElementById("loginSection").style.display = "none";
+    document.getElementById("libraryApp").style.display = "block";
+  } else {
+    error.style.display = "block";
+    error.innerText = "❌ Invalid username or password!";
+  }
+}
+
+function showTab(tabName) {
+  // Hide all tab contents
+  const tabContents = document.querySelectorAll('.tab-content');
+  tabContents.forEach(tab => tab.classList.remove('active'));
+  
+  // Hide home page
+  document.getElementById('homePage').style.display = 'none';
+  
+  // Show selected tab
+  document.getElementById(tabName).classList.add('active');
+  
+  // Load data for specific tabs
+  if (tabName === 'books') {
+    displayAllBooks();
+  } else if (tabName === 'stats') {
+    displayStats();
+  } else if (tabName === 'borrowers') {
+    displayBorrowers();
+  } else if (tabName === 'popular') {
+    displayPopularBooks();
+  }
+}
+
+function showHome() {
+  // Hide all tab contents
+  const tabContents = document.querySelectorAll('.tab-content');
+  tabContents.forEach(tab => tab.classList.remove('active'));
+  
+  // Show home page
+  document.getElementById('homePage').style.display = 'block';
+}
+
+function borrowBook() {
+  const bookId = document.getElementById("borrowBookId").value.trim();
+  const borrowerName = document.getElementById("borrowerName").value.trim();
+  const borrowerId = document.getElementById("borrowerId").value.trim();
+  const phone = document.getElementById("borrowerPhone").value.trim();
+  const messageDiv = document.getElementById("borrowMessage");
+  
+  if (!bookId || !borrowerName || !borrowerId || !phone) {
+    showMessage("❌ Please fill all fields!", "error", messageDiv);
+    return;
+  }
+  
+  if (!books[bookId]) {
+    showMessage("❌ Book not found!", "error", messageDiv);
+    return;
+  }
+  
+  const book = books[bookId];
+  if (book.borrowedCopies >= book.totalCopies) {
+    showMessage("❌ No copies available!", "error", messageDiv);
+    return;
+  }
+  
+  // Update book
+  book.borrowedCopies++;
+  book.count++;
+  book.borrowers.push({ borrowerID: borrowerId, name: borrowerName, phone: phone });
+  
+  // Update borrowers
+  borrowers[borrowerId] = {
+    name: borrowerName,
+    phone: phone,
+    borrowedBooks: [bookId]
+  };
+  
+  showMessage("✅ Book borrowed successfully!", "success", messageDiv);
+  clearForm(['borrowBookId', 'borrowerName', 'borrowerId', 'borrowerPhone']);
+}
+
+function returnBook() {
+  const borrowerId = document.getElementById("returnBorrowerId").value.trim();
+  const messageDiv = document.getElementById("returnMessage");
+  
+  if (!borrowerId) {
+    showMessage("❌ Please enter borrower ID!", "error", messageDiv);
+    return;
+  }
+  
+  if (!borrowers[borrowerId]) {
+    showMessage("❌ Borrower not found!", "error", messageDiv);
+    return;
+  }
+  
+  const borrower = borrowers[borrowerId];
+  if (borrower.borrowedBooks.length === 0) {
+    showMessage("❌ No books borrowed by this borrower!", "error", messageDiv);
+    return;
+  }
+  
+  const bookId = borrower.borrowedBooks[0];
+  const book = books[bookId];
+  
+  // Update book
+  book.borrowedCopies--;
+  book.borrowers = book.borrowers.filter(b => b.borrowerID !== borrowerId);
+  
+  // Update borrower
+  borrower.borrowedBooks = [];
+  delete borrowers[borrowerId];
+  
+  showMessage("✅ Book returned successfully!", "success", messageDiv);
+  document.getElementById("returnBorrowerId").value = '';
+}
+
+function addBook() {
+  const id = document.getElementById("bookId").value.trim();
+  const title = document.getElementById("bookTitle").value.trim();
+  const author = document.getElementById("bookAuthor").value.trim();
+  const copies = parseInt(document.getElementById("bookCopies").value);
+  const messageDiv = document.getElementById("addMessage");
+  
+  if (!id || !title || !author) {
+    showMessage("❌ Please fill all required fields!", "error", messageDiv);
+    return;
+  }
+  
+  if (copies < 1) {
+    showMessage("❌ Number of copies must be at least 1!", "error", messageDiv);
+    return;
+  }
+  
+  if (books[id]) {
+    showMessage("❌ Book with ID '" + id + "' already exists!", "error", messageDiv);
+    return;
+  }
+  
+  books[id] = {
+    title: title,
+    author: author,
+    totalCopies: copies,
+    borrowedCopies: 0,
+    count: 0,
+    borrowers: []
+  };
+  
+  showMessage("✅ Book added successfully!", "success", messageDiv);
+  clearForm(['bookId', 'bookTitle', 'bookAuthor']);
+  document.getElementById("bookCopies").value = "1";
+}
+
+function searchBook() {
+  const bookId = document.getElementById("searchBookId").value.trim();
+  const resultDiv = document.getElementById("searchResult");
+  
+  if (!bookId) {
+    showMessage("❌ Please enter book ID!", "error", resultDiv);
+    return;
+  }
+  
+  if (books[bookId]) {
+    const book = books[bookId];
+    resultDiv.innerHTML = `
+      <div class="book-card">
+        <div class="book-title">📖 ${book.title}</div>
+        <div class="book-author">by ${book.author}</div>
+        <div class="book-stats">
+          <span class="stat-item">🆔 ID: ${bookId}</span>
+          <span class="stat-item">📊 Borrowed: ${book.count} times</span>
+          <span class="stat-item">📚 Available: ${book.totalCopies - book.borrowedCopies}/${book.totalCopies}</span>
+          <span class="stat-item">📍 Status: ${book.borrowedCopies >= book.totalCopies ? "🔴 All Borrowed" : "🟢 Available"}</span>
+        </div>
+      </div>
+    `;
+    resultDiv.style.display = "block";
+  } else {
+    showMessage("❌ Book not found!", "error", resultDiv);
+  }
+}
+
+function displayAllBooks() {
+  const booksList = document.getElementById("allBooksList");
+  booksList.innerHTML = "";
+  
+  Object.entries(books).forEach(([id, book]) => {
+    const bookCard = document.createElement("div");
+    bookCard.className = "book-card";
+    bookCard.innerHTML = `
+      <div class="book-title">📖 ${book.title}</div>
+      <div class="book-author">by ${book.author}</div>
+      <div class="book-stats">
+        <span class="stat-item">🆔 ID: ${id}</span>
+        <span class="stat-item">📊 Borrowed: ${book.count} times</span>
+        <span class="stat-item">📚 Available: ${book.totalCopies - book.borrowedCopies}/${book.totalCopies}</span>
+        <span class="stat-item">📍 Status: ${book.borrowedCopies >= book.totalCopies ? "🔴 All Borrowed" : "🟢 Available"}</span>
+      </div>
+    `;
+    booksList.appendChild(bookCard);
+  });
+}
+
+function displayStats() {
+  const totalBooks = Object.keys(books).length;
+  const totalBorrowed = Object.values(books).reduce((sum, book) => sum + book.borrowedCopies, 0);
+  const totalBorrowers = Object.keys(borrowers).length;
+  const totalBorrows = Object.values(books).reduce((sum, book) => sum + book.count, 0);
+  
+  document.getElementById("totalBooks").textContent = totalBooks;
+  document.getElementById("totalBorrowed").textContent = totalBorrowed;
+  document.getElementById("totalBorrowers").textContent = totalBorrowers;
+  document.getElementById("totalBorrows").textContent = totalBorrows;
+}
+
+function displayBorrowers() {
+  const borrowersList = document.getElementById("borrowersList");
+  borrowersList.innerHTML = "";
+  
+  if (Object.keys(borrowers).length === 0) {
+    borrowersList.innerHTML = "<p style='text-align: center; color: #7f8c8d;'>No active borrowers found.</p>";
+    return;
+  }
+  
+  Object.entries(borrowers).forEach(([id, borrower]) => {
+    const borrowerCard = document.createElement("div");
+    borrowerCard.className = "borrower-card";
+    borrowerCard.innerHTML = `
+      <div class="borrower-name">👤 ${borrower.name}</div>
+      <div class="borrower-info">📞 Phone: ${borrower.phone}</div>
+      <div class="borrower-info">🆔 ID: ${id}</div>
+      <div class="borrower-info">📚 Books Borrowed: ${borrower.borrowedBooks.length}</div>
+    `;
+    borrowersList.appendChild(borrowerCard);
+  });
+}
+
+function displayPopularBooks() {
+  const booksArray = Object.entries(books).map(([id, book]) => ({
+    id,
+    ...book
+  }));
+  
+  booksArray.sort((a, b) => b.count - a.count);
+  
+  const totalBooks = booksArray.length;
+  const totalBorrows = booksArray.reduce((sum, book) => sum + book.count, 0);
+  const avgBorrows = totalBooks > 0 ? (totalBorrows / totalBooks).toFixed(1) : 0;
+  const topBorrows = booksArray.length > 0 ? booksArray[0].count : 0;
+  
+  document.getElementById("popTotalBooks").textContent = totalBooks;
+  document.getElementById("popTotalBorrows").textContent = totalBorrows;
+  document.getElementById("popAvgBorrows").textContent = avgBorrows;
+  document.getElementById("popTopBorrows").textContent = topBorrows;
+  
+  const popularBooksList = document.getElementById("popularBooksList");
+  popularBooksList.innerHTML = "";
+  
+  booksArray.forEach((book, index) => {
+    const rank = index + 1;
+    const popularityPercentage = topBorrows > 0 ? (book.count / topBorrows) * 100 : 0;
+    
+    const bookCard = document.createElement("div");
+    bookCard.className = "book-card";
+    bookCard.style.position = "relative";
+    bookCard.innerHTML = `
+      <div class="rank-badge ${rank <= 3 ? `rank-${rank}` : ''}">${rank}</div>
+      <div class="book-title">📖 ${book.title}</div>
+      <div class="book-author">by ${book.author}</div>
+      <div class="popularity-bar">
+        <div class="popularity-fill" style="width: ${popularityPercentage}%"></div>
+      </div>
+      <div class="book-stats">
+        <span class="stat-item">🆔 ID: ${book.id}</span>
+        <span class="stat-item">📊 Borrowed: ${book.count} times</span>
+        <span class="stat-item">📚 Available: ${book.totalCopies - book.borrowedCopies}/${book.totalCopies}</span>
+        <span class="stat-item">📍 Status: ${book.borrowedCopies >= book.totalCopies ? "🔴 All Borrowed" : "🟢 Available"}</span>
+      </div>
+    `;
+    popularBooksList.appendChild(bookCard);
+  });
+}
+
+function showMessage(message, type, element) {
+  element.className = type;
+  element.textContent = message;
+  element.style.display = "block";
+  
+  setTimeout(() => {
+    element.style.display = "none";
+  }, 5000);
+}
+
+function clearForm(fields) {
+  fields.forEach(fieldId => {
+    document.getElementById(fieldId).value = '';
+  });
+}
+</script>
+
+</body>
+</html> 
